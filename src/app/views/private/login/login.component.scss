@@ -1,0 +1,10 @@
+:host {
+  display: flex;
+  margin: 0.5em;
+  * {
+    margin-right: 1em;
+    &:last-child {
+      margin: 0;
+    }
+  }
+}

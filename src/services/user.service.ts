@@ -6,12 +6,12 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UserService {
-  url = 'https://jsonplaceholder.typicode.com/users/1';
+  url = 'https://jsonplaceholder.typicode.com/users/';
   constructor(private http: HttpClient) {
     console.log('Greetings from the user service constructor!');
   }
 
-  getUser(): Observable<any> {
-    return this.http.get(this.url);
+  getUser(id = 3): Observable<any> {
+    return this.http.get(`${this.url}${id}`);
   }
 }
