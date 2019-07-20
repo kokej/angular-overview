@@ -1,3 +1,9 @@
 a {
   font-size: 1.5em;
+  &:last-child {
+    display: none;
+    &.logged {
+      display: inline-block;
+    }
+  }
 }

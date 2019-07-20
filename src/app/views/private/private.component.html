@@ -1,8 +1,6 @@
-<p>
-  private works!
-</p>
 <nav>
   <a routerLink="login">login</a>
-  <a routerLink="user">user</a>
+  <a [routerLink]="'user/' + userLoggedId || ''">user</a>
+  <a [class.logged]="isLogged">User id: {{userLoggedId}}</a>
 </nav>
 <router-outlet></router-outlet>

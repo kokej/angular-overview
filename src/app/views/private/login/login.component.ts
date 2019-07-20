@@ -2,6 +2,7 @@ import { UserForm } from './../../../interfaces/UserForm';
 import { UserService } from './../../../../services/user.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -33,7 +34,7 @@ export class LoginComponent implements OnInit {
     )
   });
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private router: Router) {
     this.getIsLogged();
   }
 
@@ -57,9 +58,15 @@ export class LoginComponent implements OnInit {
   login(e) {
     e.preventDefault();
 
-    const userId = this.isLogged ? undefined : this.userForm.controls.id.value;
+    const userId = this.isLogged
+      ? undefined
+      : parseInt(this.userForm.controls.id.value, 10);
     this.userService.setUserLogged(userId);
     console.log(this.userForm);
+    if (this.isLogged) {
+      const url: string = 'private/user/' + this.userLoggedId;
+      this.router.navigateByUrl(url);
+    }
   }
 
   ngOnInit() {

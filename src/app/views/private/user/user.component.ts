@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UserService } from 'src/services/user.service';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-user',
@@ -9,23 +10,28 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./user.component.scss']
 })
 export class UserComponent implements OnInit, OnDestroy {
-  // public unsubscribe$ = new Subject<void>();
+  public unsubscribe$ = new Subject<void>();
+  userId: number;
   user: Observable<any>;
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private route: ActivatedRoute
+  ) {}
 
   getUser() {
-    return;
-  }
-
-  ngOnInit() {
-    this.userService
-      .getUser()
-      // .pipe(takeUntil(this.unsubscribe$))
+    this.userId = +this.route.snapshot.paramMap.get('id');
+    return this.userService
+      .getUser(this.userId)
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe(user => (this.user = user));
   }
 
+  ngOnInit() {
+    this.getUser();
+  }
+
   ngOnDestroy() {
-    // this.unsubscribe$.next();
-    // this.unsubscribe$.complete();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

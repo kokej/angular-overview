@@ -18,7 +18,10 @@ export class UserService {
   }
 
   setUserLogged(userId) {
-    this.userId = userId === '' ? undefined : userId;
+    if (typeof userId !== 'number') {
+      userId = undefined;
+    }
+    this.userId = userId;
     this.emitUserLogged();
   }
 
@@ -27,6 +30,9 @@ export class UserService {
   }
 
   getUser(id = 3): Observable<any> {
+    if (typeof id !== 'number') {
+      return;
+    }
     return this.http.get(`${this.url}${id}`);
   }
 }
