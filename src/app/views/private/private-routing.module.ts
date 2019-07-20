@@ -3,6 +3,7 @@ import { LoginComponent } from './login/login.component';
 import { PrivateComponent } from './private.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { LoginGuard } from 'src/app/guards/login.guard';
 
 const routes: Routes = [
   {
@@ -19,8 +20,9 @@ const routes: Routes = [
         component: LoginComponent
       },
       {
-        path: 'user',
-        component: UserComponent
+        path: 'user/:id',
+        component: UserComponent,
+        canActivate: [LoginGuard]
       }
     ]
   }

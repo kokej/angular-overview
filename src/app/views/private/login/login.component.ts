@@ -9,6 +9,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+  isLogged: boolean;
+  userLoggedId: number;
   options: UserForm[] = [
     {
       id: 1,
@@ -24,14 +26,43 @@ export class LoginComponent implements OnInit {
     }
   ];
   userForm = new FormGroup({
-    id: new FormControl('', Validators.required)
+    id: new FormControl(
+      {
+        value: ''
+      } // , Validators.required
+    )
   });
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService) {
+    this.getIsLogged();
+  }
 
-  login() {
+  setFormState() {
+    const idControl = this.userForm.controls.id;
+    this.isLogged ? idControl.disable() : idControl.enable();
+  }
+
+  getIsLogged(loggedId?) {
+    this.userLoggedId = loggedId || this.userService.getUserLogged();
+    this.isLogged = this.userLoggedId !== undefined;
+    this.setFormState();
+  }
+
+  getIsLoggedSubscription() {
+    return this.userService.userId$.subscribe(loggedId =>
+      this.getIsLogged(loggedId)
+    );
+  }
+
+  login(e) {
+    e.preventDefault();
+
+    const userId = this.isLogged ? undefined : this.userForm.controls.id.value;
+    this.userService.setUserLogged(userId);
     console.log(this.userForm);
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getIsLoggedSubscription();
+  }
 }

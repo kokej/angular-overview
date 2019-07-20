@@ -1,9 +1,9 @@
-<form [formGroup]="userForm" (submit)="login()">
+<form [formGroup]="userForm" (submit)="login($event)">
   <i>user</i>
   <select formControlName="id">
     <option *ngFor="let option of options" value={{option.id}}>
       {{option.username}}
     </option>
   </select>
-  <button type="submit" [disabled]="!userForm.valid">login</button>
+  <button type="submit">{{this.isLogged ? 'logout' : 'login' }}</button>
 </form>
