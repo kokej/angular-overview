@@ -6,8 +6,8 @@ import { takeUntil } from 'rxjs/operators';
 export abstract class UserServiceComponentBase implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
 
-  protected isLogged: boolean;
-  protected userLoggedId: number;
+  isLogged: boolean;
+  userLoggedId: number;
   constructor(protected userService: UserService) {}
 
   getIsLogged(loggedId?) {}

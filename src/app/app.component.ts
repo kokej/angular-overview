@@ -8,13 +8,13 @@ import { Component, OnInit } from '@angular/core';
 export class AppComponent implements OnInit {
   title = 'Curso de Angular';
   newTitleOnInit = 'Breve introducción a Angular';
-  // newTitleInHtml = 'Introducción a Angular';
+  newTitleInHtml = 'Introducción a Angular';
 
   changeTitle(newTitle: string): string {
     return (this.title = newTitle);
   }
 
   ngOnInit() {
-    // this.changeTitle(this.newTitleOnInit);
+    this.changeTitle(this.newTitleOnInit);
   }
 }
