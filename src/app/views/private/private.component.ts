@@ -1,30 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { UserService } from 'src/services/user.service';
+import { UserServiceComponentBase } from './user-service-base.component';
 
 @Component({
   selector: 'app-private',
   templateUrl: './private.component.html',
   styleUrls: ['./private.component.scss']
 })
-export class PrivateComponent implements OnInit {
-  isLogged: boolean;
-  userLoggedId: number;
-  constructor(private userService: UserService) {
-    this.getIsLogged();
+export class PrivateComponent extends UserServiceComponentBase {
+  constructor(protected userService: UserService) {
+    super(userService);
   }
 
   getIsLogged(loggedId?) {
     this.userLoggedId = loggedId || this.userService.getUserLogged();
     this.isLogged = this.userLoggedId !== undefined;
-  }
-
-  getIsLoggedSubscription() {
-    return this.userService.userId$.subscribe(loggedId =>
-      this.getIsLogged(loggedId)
-    );
-  }
-
-  ngOnInit() {
-    this.getIsLoggedSubscription();
   }
 }

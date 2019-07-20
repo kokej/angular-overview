@@ -1,17 +1,16 @@
 import { UserForm } from './../../../interfaces/UserForm';
 import { UserService } from './../../../../services/user.service';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { UserServiceComponentBase } from '../user-service-base.component';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
-  isLogged: boolean;
-  userLoggedId: number;
+export class LoginComponent extends UserServiceComponentBase {
   options: UserForm[] = [
     {
       id: 1,
@@ -34,8 +33,8 @@ export class LoginComponent implements OnInit {
     )
   });
 
-  constructor(private userService: UserService, private router: Router) {
-    this.getIsLogged();
+  constructor(protected userService: UserService, private router: Router) {
+    super(userService);
   }
 
   setFormState() {
@@ -47,12 +46,6 @@ export class LoginComponent implements OnInit {
     this.userLoggedId = loggedId || this.userService.getUserLogged();
     this.isLogged = this.userLoggedId !== undefined;
     this.setFormState();
-  }
-
-  getIsLoggedSubscription() {
-    return this.userService.userId$.subscribe(loggedId =>
-      this.getIsLogged(loggedId)
-    );
   }
 
   login(e) {
@@ -67,9 +60,5 @@ export class LoginComponent implements OnInit {
       const url: string = 'private/user/' + this.userLoggedId;
       this.router.navigateByUrl(url);
     }
-  }
-
-  ngOnInit() {
-    this.getIsLoggedSubscription();
   }
 }
